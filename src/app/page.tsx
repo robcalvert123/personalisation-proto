@@ -135,8 +135,6 @@ export default function Home() {
   const handleSendMessage = (text: string) => {
     if (!text.trim() || isBotTyping) return;
     
-    const messageId = messageIdRef.current++;
-    
     // Add user message
     const userMessage: UserMessage = {
       text,
