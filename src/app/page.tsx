@@ -18,6 +18,7 @@ interface BotMessage extends BaseMessage {
   isProductLink?: false;
   isTyping?: boolean;
   displayText?: string;
+  messageId?: number;
 }
 
 interface ProductMessage extends BaseMessage {
@@ -27,6 +28,7 @@ interface ProductMessage extends BaseMessage {
   linkUrl: string;
   isTyping?: boolean;
   displayText?: string;
+  messageId?: number;
 }
 
 type Message = UserMessage | BotMessage | ProductMessage;
@@ -159,7 +161,8 @@ export default function Home() {
           isUser: false,
           isProductLink: true,
           linkText,
-          linkUrl: "https://puresport.co/products/ultra-electrolytes-discovery-pack-2x15-pack?variant=45319763099786"
+          linkUrl: "https://puresport.co/products/ultra-electrolytes-discovery-pack-2x15-pack?variant=45319763099786",
+          messageId: botMessageId
         };
         
         setMessages(prev => [...prev, productMessage]);
@@ -169,7 +172,8 @@ export default function Home() {
         const botResponse: BotMessage = {
           text: botMessage,
           isUser: false,
-          isProductLink: false
+          isProductLink: false,
+          messageId: botMessageId
         };
         setMessages(prev => [...prev, botResponse]);
         setIsBotTyping(true);
@@ -210,7 +214,7 @@ export default function Home() {
             >
               {message.isUser ? message.text : (
                 <>
-                  {currentTypingMessage?.id === index ? (
+                  {currentTypingMessage && currentTypingMessage.id === message.messageId ? (
                     <span className="typing-indicator">
                       {currentTypingMessage.words.map((word, wordIndex) => (
                         <span 
